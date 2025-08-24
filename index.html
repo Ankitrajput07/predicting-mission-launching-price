@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rocket Launch Price Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Rocket Launch Price Predictor</h1>
+        <p>Select the launch details to predict the mission cost.</p>
+
+        <form action="{{ url_for('predict') }}" method="post">
+            
+            <label for="organisation">Organisation:</label>
+            <select id="organisation" name="organisation" required>
+                {% for org in unique_values.Organisation|sort %}
+                    <option value="{{ org }}" {% if form_data and form_data.Organisation == org %}selected{% endif %}>{{ org }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="location">Location:</label>
+            <select id="location" name="location" required>
+                {% for loc in unique_values.Location|sort %}
+                    <option value="{{ loc }}" {% if form_data and form_data.Location == loc %}selected{% endif %}>{{ loc }}</option>
+                {% endfor %}
+            </select>
+            
+            <label for="rocket_status">Rocket Status:</label>
+            <select id="rocket_status" name="rocket_status" required>
+                {% for status in unique_values.Rocket_Status|sort %}
+                    <option value="{{ status }}" {% if form_data and form_data.Rocket_Status == status %}selected{% endif %}>{{ status }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="mission_status">Mission Status:</label>
+            <select id="mission_status" name="mission_status" required>
+                {% for status in unique_values.Mission_Status|sort %}
+                    <option value="{{ status }}" {% if form_data and form_data.Mission_Status == status %}selected{% endif %}>{{ status }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Predict Price</button>
+        </form>
+
+        {% if prediction_text %}
+            <div class="prediction">
+                <h2>Predicted Launch Price:</h2>
+                <p>{{ prediction_text }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
